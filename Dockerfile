@@ -9,7 +9,8 @@ RUN \
 	rsync \ 
   && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /root
+VOLUME ["/data"]
+WORKDIR /data
 
 RUN \ 
   wget https://github.com/openshift/origin/releases/download/v3.6.0/openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit.tar.gz && \ 
