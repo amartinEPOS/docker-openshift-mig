@@ -1,6 +1,8 @@
 FROM debian:stable
 
-ENV OC_RSYNC_SRC=/invalid
+ENV \ 
+  OC_RSYNC_SRC=/invalid \ 
+  OC_LOGIN_TOKEN=xxx
 
 RUN \
   # this script calls apt-get update
