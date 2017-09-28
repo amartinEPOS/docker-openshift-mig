@@ -1,5 +1,9 @@
 FROM debian:stable
 
+ENV \ 
+  OC_RSYNC_SRC=/invalid \ 
+  OC_RSYNC_DEST=/invalid
+
 RUN \
   # this script calls apt-get update
   apt-get update && \ 
@@ -9,11 +13,15 @@ RUN \
 	rsync \ 
   && rm -rf /var/lib/apt/lists/*
 
+RUN \ 
+  wget https://github.com/openshift/origin/releases/download/v3.6.0/openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit.tar.gz && \ 
+  mkdir -p /oc-client && \ 
+  tar xfz openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit.tar.gz -C /oc-client --strip=1 && \ 
+  rm openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit.tar.gz
+
 VOLUME ["/data"]
 WORKDIR /data
 
-RUN \ 
-  wget https://github.com/openshift/origin/releases/download/v3.6.0/openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit.tar.gz && \ 
-  tar xfz openshift-origin-client-tools-v3.6.0-c4dd4cf-linux-64bit.tar.gz
+COPY data/docker-entrypoint.sh /docker-entrypoint.sh
 
-ENTRYPOINT ["/bin/bash", "-c", "tail"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
